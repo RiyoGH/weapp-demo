@@ -1,0 +1,108 @@
+<!--index.wxml-->
+<view class="container">
+  <!-- 背景装饰 -->
+  <view class="bg-decoration">
+    <view class="particle" wx:for="{{particles}}" wx:key="id" style="top:{{item.top}}%; left:{{item.left}}%; background:{{item.color}}"></view>
+  </view>
+
+  <!-- 顶部标题区 -->
+  <view class="header-section">
+    <view class="title-glow animate-pulse">电竞文旅AI</view>
+    <view class="subtitle">探索电竞世界 · 感受赛事精神</view>
+  </view>
+
+  <!-- 情感迎宾卡片 -->
+  <view class="welcome-card card">
+    <view class="welcome-header">
+      <view class="emotion-emoji">{{welcomeEmoji}}</view>
+      <view class="welcome-content">
+        <view class="welcome-title">{{welcomeTitle}}</view>
+        <view class="welcome-message">{{welcomeMessage}}</view>
+      </view>
+    </view>
+    <view class="welcome-suggestions">
+      <view 
+        wx:for="{{suggestions}}" 
+        wx:key="id" 
+        class="suggestion-tag"
+        data-message="{{item.text}}"
+        bindtap="onSuggestionTap"
+      >{{item.text}}</view>
+    </view>
+  </view>
+
+  <!-- 三大核心入口 -->
+  <view class="core-entries">
+    <!-- AI情感对话 -->
+    <view class="entry-card card animate-slide-up" style="animation-delay: 0.1s" data-path="/pages/chat/chat" bindtap="onEntryTap">
+      <view class="entry-icon" style="background: linear-gradient(135deg, #ff4444, #ff8833)">
+        <text>💬</text>
+      </view>
+      <view class="entry-info">
+        <view class="entry-title">AI情感对话</view>
+        <view class="entry-desc">懂你的情绪 · 传递电竞精神</view>
+        <view class="entry-tags">
+          <text class="tag tag-red">情感识别</text>
+          <text class="tag tag-gold">智能推理</text>
+        </view>
+      </view>
+      <view class="entry-arrow">→</view>
+    </view>
+
+    <!-- AR奇幻扫描 -->
+    <view class="entry-card card animate-slide-up" style="animation-delay: 0.2s" data-path="/pages/ar/ar" bindtap="onEntryTap">
+      <view class="entry-icon" style="background: linear-gradient(135deg, #00ccff, #9966ff)">
+        <text>📸</text>
+      </view>
+      <view class="entry-info">
+        <view class="entry-title">AR奇幻扫描</view>
+        <view class="entry-desc">线下打卡 · 虚拟赛场重现</view>
+        <view class="entry-tags">
+          <text class="tag tag-blue">空间锚点</text>
+          <text class="tag tag-purple">沉浸体验</text>
+        </view>
+      </view>
+      <view class="entry-arrow">→</view>
+    </view>
+
+    <!-- 电竞文旅路线 -->
+    <view class="entry-card card animate-slide-up" style="animation-delay: 0.3s" data-path="/pages/journey/journey" bindtap="onEntryTap">
+      <view class="entry-icon" style="background: linear-gradient(135deg, #66ff66, #ffaa00)">
+        <text>🗺️</text>
+      </view>
+      <view class="entry-info">
+        <view class="entry-title">我的电竞文旅路线</view>
+        <view class="entry-desc">个性定制 · 深度打卡体验</view>
+        <view class="entry-tags">
+          <text class="tag tag-gold">专属路线</text>
+          <text class="tag tag-blue">数字藏品</text>
+        </view>
+      </view>
+      <view class="entry-arrow">→</view>
+    </view>
+  </view>
+
+  <!-- 知识图谱展示区 -->
+  <view class="kg-section">
+    <view class="section-title">热门战队羁绊</view>
+    <scroll-view class="team-scroll" scroll-x="{{true}}" enable-flex="{{true}}">
+      <view 
+        wx:for="{{hotTeams}}" 
+        wx:key="id" 
+        class="team-card"
+        data-team="{{item.name}}"
+        bindtap="onTeamTap"
+      >
+        <view class="team-logo" style="background: {{item.color}}">{{item.logoText}}</view>
+        <view class="team-name">{{item.name}}</view>
+        <view class="team-bonds">{{item.bonds}}</view>
+        <view class="team-spirit">{{item.spirit}}</view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="footer-tip">
+    <text>Powered by 腾讯混元大模型 · 元器智能体</text>
+  </view>
+</view>

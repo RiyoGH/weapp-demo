@@ -1,0 +1,224 @@
+<!-- profile.wxml - 个人中心页面 -->
+<view class="container">
+    <!-- 用户信息头部 -->
+  <view class="profile-header">
+    <!-- 背景装饰 -->
+    <view class="header-bg"></view>
+    
+    <!-- 用户信息 -->
+    <view class="user-info">
+      <!-- 头像 -->
+      <button class="avatar-wrapper" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <view class="user-avatar {{userInfo.avatarUrl ? 'has-avatar' : 'default-avatar'}}">
+          <open-data wx:if="{{!userInfo.avatarUrl}}" type="userAvatarUrl" class="open-avatar"></open-data>
+          <text wx:else class="avatar-placeholder">👤</text>
+        </view>
+        <view class="avatar-edit">
+          <text>✏️</text>
+        </view>
+      </button>
+      
+      <!-- 用户名 -->
+      <view class="user-details">
+        <view class="user-name-row">
+          <input 
+            class="user-name-input {{userInfo.nickname ? 'filled' : ''}}" 
+            type="nickname"
+            placeholder="点击设置昵称"
+            placeholder-class="nickname-placeholder"
+            value="{{userInfo.nickname}}"
+            bindchange="onNicknameChange"
+          />
+          <view class="edit-icon" bindtap="editProfile">✏️</view>
+        </view>
+        
+        <!-- 情感状态 -->
+        <view class="emotion-status">
+          <text class="emotion-icon">{{currentEmotion.emoji}}</text>
+          <text class="emotion-text">{{currentEmotion.name}}模式</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 用户统计数据 -->
+  <view class="stats-section">
+    <view class="stat-card" wx:for="{{userStats}}" wx:key="id">
+      <view class="stat-value">{{item.value}}</view>
+      <view class="stat-label">{{item.label}}</view>
+      <view class="stat-icon">{{item.icon}}</view>
+    </view>
+  </view>
+
+  <!-- 快速操作入口 -->
+  <view class="quick-actions">
+    <view 
+      class="action-item {{item.disabled ? 'disabled' : ''}}" 
+      wx:for="{{quickActions}}" 
+      wx:key="id"
+      data-action="{{item.action}}"
+      bindtap="{{item.disabled ? '' : 'onQuickAction'}}"
+    >
+      <view class="action-icon">{{item.icon}}</view>
+      <view class="action-text">{{item.text}}</view>
+      <view class="action-badge" wx:if="{{item.badge > 0}}">{{item.badge}}</view>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="menu-section">
+    <!-- 用户偏好设置 -->
+    <view class="menu-group">
+      <view class="menu-group-title">偏好设置</view>
+      
+      <view class="menu-item" data-type="teams" bindtap="onPreferenceSetting">
+        <view class="menu-left">
+          <text class="menu-icon">⭐</text>
+          <text class="menu-text">喜欢的战队</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-value">{{favoriteTeamsText}}</text>
+          <text class="menu-arrow">→</text>
+        </view>
+      </view>
+
+      <view class="menu-item" data-type="style" bindtap="onPreferenceSetting">
+        <view class="menu-left">
+          <text class="menu-icon">🎨</text>
+          <text class="menu-text">交互风格</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-value">{{preferredStyleText}}</text>
+          <text class="menu-arrow">→</text>
+        </view>
+      </view>
+
+      <view class="menu-item" data-type="city" bindtap="onPreferenceSetting">
+        <view class="menu-left">
+          <text class="menu-icon">🏙️</text>
+          <text class="menu-text">目标城市</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-value">{{targetCitiesText}}</text>
+          <text class="menu-arrow">→</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 历史记录 -->
+    <view class="menu-group">
+      <view class="menu-group-title">历史记录</view>
+      
+      <view class="menu-item" bindtap="onViewHistory" data-type="chat">
+        <view class="menu-left">
+          <text class="menu-icon">💬</text>
+          <text class="menu-text">对话历史</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-arrow">→</text>
+        </view>
+      </view>
+
+      <view class="menu-item" bindtap="onViewHistory" data-type="scan">
+        <view class="menu-left">
+          <text class="menu-icon">📷</text>
+          <text class="menu-text">AR扫描记录</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-arrow">→</text>
+        </view>
+      </view>
+
+      <view class="menu-item" bindtap="onViewHistory" data-type="checkin">
+        <view class="menu-left">
+          <text class="menu-icon">📍</text>
+          <text class="menu-text">打卡记录</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-arrow">→</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 功能设置 -->
+    <view class="menu-group">
+      <view class="menu-group-title">功能设置</view>
+      
+      <view class="menu-item" bindtap="onNotificationSetting">
+        <view class="menu-left">
+          <text class="menu-icon">🔔</text>
+          <text class="menu-text">消息通知</text>
+        </view>
+        <view class="menu-right">
+          <switch 
+            checked="{{notificationEnabled}}" 
+            color="#ffd700"
+            bindchange="onNotificationChange"
+          />
+        </view>
+      </view>
+
+      <view class="menu-item" bindtap="onARSetting">
+        <view class="menu-left">
+          <text class="menu-icon">📱</text>
+          <text class="menu-text">AR设置</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-arrow">→</text>
+        </view>
+      </view>
+
+      <view class="menu-item" bindtap="onClearCache">
+        <view class="menu-left">
+          <text class="menu-icon">🗑️</text>
+          <text class="menu-text">清理缓存</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-value">{{cacheSize}}</text>
+          <text class="menu-arrow">→</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 关于与帮助 -->
+    <view class="menu-group">
+      <view class="menu-group-title">关于与帮助</view>
+      
+      <view class="menu-item" bindtap="onAbout">
+        <view class="menu-left">
+          <text class="menu-icon">ℹ️</text>
+          <text class="menu-text">关于我们</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-arrow">→</text>
+        </view>
+      </view>
+
+      <view class="menu-item" bindtap="onHelp">
+        <view class="menu-left">
+          <text class="menu-icon">❓</text>
+          <text class="menu-text">使用帮助</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-arrow">→</text>
+        </view>
+      </view>
+
+      <view class="menu-item" bindtap="onFeedback">
+        <view class="menu-left">
+          <text class="menu-icon">📧</text>
+          <text class="menu-text">意见反馈</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-arrow">→</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-info">
+    <text>V1.0.0 · 电竞文旅AI</text>
+    <text>Powered by 腾讯混元大模型</text>
+  </view>
+</view>

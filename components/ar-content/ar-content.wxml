@@ -1,0 +1,49 @@
+<!-- components/ar-content/ar-content.wxml -->
+<view class="ar-content {{show ? 'show' : ''}}">
+  <!-- 虚拟选手形象 -->
+  <view class="virtual-player {{playerAnimation}}">
+    <image class="player-image" src="{{target.playerImage}}" mode="aspectFit"></image>
+    <view class="player-info">
+      <view class="player-name">{{target.playerName}}</view>
+      <view class="player-role">{{target.playerRole}}</view>
+    </view>
+  </view>
+
+  <!-- 战斗特效 -->
+  <view class="battle-effects {{effectsVisible ? 'visible' : ''}}">
+    <view 
+      wx:for="{{effects}}" 
+      wx:key="index" 
+      class="effect-particle"
+      style="background:{{item.color}};width:{{item.size}}px;height:{{item.size}}px;left:{{item.left}}px;top:{{item.top}}px"
+    ></view>
+  </view>
+
+  <!-- 知识图谱卡片 -->
+  <view class="kg-card">
+    <view class="kg-header">
+      <text class="kg-title">知识图谱</text>
+    </view>
+    <view class="kg-items">
+      <view class="kg-item">
+        <text class="kg-label">战队</text>
+        <text class="kg-value">{{target.team}}</text>
+      </view>
+      <view class="kg-item">
+        <text class="kg-label">羁绊</text>
+        <text class="kg-value">{{target.bond}}</text>
+      </view>
+      <view class="kg-item">
+        <text class="kg-label">精神</text>
+        <text class="kg-value spirit">{{target.spirit}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="action-btn" bindtap="capture">📷 截图</button>
+    <button class="action-btn primary" bindtap="askAI">💬 AI讲解</button>
+    <button class="action-btn" bindtap="generatePoster">🎨 海报</button>
+  </view>
+</view>

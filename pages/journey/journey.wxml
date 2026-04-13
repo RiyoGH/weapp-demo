@@ -1,0 +1,159 @@
+<!-- journey.wxml -->
+<view class="container">
+  <!-- 顶部标题 -->
+  <view class="journey-header">
+    <view class="header-content">
+      <view class="title-section">
+        <text class="main-title">电竞文旅路线</text>
+        <text class="sub-title">专属定制 · 深度打卡</text>
+      </view>
+      <view class="user-avatar">
+        <open-data type="userAvatarUrl"></open-data>
+      </view>
+    </view>
+  </view>
+
+  <!-- 偏好选择区 -->
+  <view class="preference-section">
+    <view class="section-title">选择你的偏好</view>
+    <view class="preference-tags">
+      <view 
+        wx:for="{{preferenceOptions.teams}}" 
+        wx:key="id"
+        class="pref-tag {{selectedTeams.includes(item.id) ? 'selected' : ''}}"
+        data-type="team"
+        data-id="{{item.id}}"
+        bindtap="togglePreference"
+      >{{item.name}}</view>
+      
+      <view 
+        wx:for="{{preferenceOptions.styles}}" 
+        wx:key="id"
+        class="pref-tag style-tag {{selectedStyles.includes(item.id) ? 'selected' : ''}}"
+        data-type="style"
+        data-id="{{item.id}}"
+        bindtap="togglePreference"
+      >{{item.name}}</view>
+      
+      <view 
+        wx:for="{{preferenceOptions.cities}}" 
+        wx:key="id"
+        class="pref-tag city-tag {{selectedCities.includes(item.id) ? 'selected' : ''}}"
+        data-type="city"
+        data-id="{{item.id}}"
+        bindtap="togglePreference"
+      >{{item.name}}</view>
+    </view>
+    
+    <button class="generate-btn" bindtap="generateRoute" loading="{{isGenerating}}">
+      {{isGenerating ? '生成中...' : '🔥 生成专属路线'}}
+    </button>
+  </view>
+
+  <!-- 当前路线展示 -->
+  <view wx:if="{{currentRoute}}" class="current-route">
+    <view class="route-header">
+      <view class="route-title">{{currentRoute.title}}</view>
+      <view class="route-desc">{{currentRoute.description}}</view>
+    </view>
+
+    <!-- 路线节点 -->
+    <view class="route-nodes">
+      <view 
+        wx:for="{{currentRoute.nodes}}" 
+        wx:key="id"
+        class="route-node {{item.completed ? 'completed' : ''}}"
+        bindtap="onNodeTap"
+        data-node="{{item}}"
+      >
+        <view class="node-line {{index === 0 ? 'first' : index === currentRoute.nodes.length - 1 ? 'last' : ''}}"></view>
+        <view class="node-marker {{item.completed ? 'completed' : ''}}">
+          <text wx:if="{{item.completed}}">✓</text>
+          <text wx:else>{{index + 1}}</text>
+        </view>
+        <view class="node-content">
+          <view class="node-header">
+            <view class="node-name">{{item.name}}</view>
+            <view class="node-type tag tag-gold">{{item.type}}</view>
+          </view>
+          <view class="node-desc">{{item.description}}</view>
+          <view class="node-tags">
+            <text class="tag tag-red">{{item.spirit}}</text>
+            <text class="tag tag-blue">{{item.bond}}</text>
+          </view>
+          <view wx:if="{{item.story}}" class="node-story">
+            <text>{{item.story}}</text>
+          </view>
+        </view>
+        <view class="node-actions">
+          <button class="node-btn ar-btn" data-node="{{item}}" bindtap="openAR">
+            📷 AR打卡
+          </button>
+          <button class="node-btn collect-btn" data-node="{{item}}" bindtap="collectNode">
+            {{item.collected ? '❤️ 已收藏' : '🤍 收藏'}}
+          </button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 路线统计 -->
+    <view class="route-stats">
+      <view class="stat-item">
+        <text class="stat-value">{{currentRoute.completedCount}}</text>
+        <text class="stat-label">已打卡</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{currentRoute.totalCount}}</text>
+        <text class="stat-label">总节点</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{currentRoute.collectibles}}</text>
+        <text class="stat-label">藏品</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 我的路线列表 -->
+  <view class="my-routes">
+    <view class="section-title">我的路线</view>
+    <view wx:if="{{myRoutes.length === 0}}" class="empty-state">
+      <view class="empty-icon">🗺️</view>
+      <view class="empty-text">还没有专属路线</view>
+      <view class="empty-hint">上方选择偏好，生成你的第一条路线吧！</view>
+    </view>
+    
+    <view wx:for="{{myRoutes}}" wx:key="id" class="route-card" bindtap="viewRoute" data-route="{{item}}">
+      <view class="route-card-header">
+        <view class="route-card-title">{{item.title}}</view>
+        <view class="route-card-progress">{{item.completedCount}}/{{item.totalCount}}</view>
+      </view>
+      <view class="route-card-desc">{{item.description}}</view>
+      <view class="route-card-tags">
+        <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="id" class="tag">{{tag}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数字藏品区 -->
+  <view class="collectibles-section">
+    <view class="section-header">
+      <text class="section-title">我的数字藏品</text>
+      <text class="more-link" bindtap="viewAllCollectibles">查看全部 →</text>
+    </view>
+    
+    <scroll-view class="collectibles-scroll" scroll-x="{{true}}" enable-flex="{{true}}">
+      <view wx:for="{{collectibles}}" wx:key="id" class="collectible-card" bindtap="viewCollectible" data-item="{{item}}">
+        <view class="collectible-image-placeholder" style="background: {{item.color || 'linear-gradient(135deg, #ff4444, #ff8833)'}}">
+          <text class="collectible-emoji">{{item.emoji || '🏆'}}</text>
+        </view>
+        <view class="collectible-info">
+          <view class="collectible-name">{{item.name}}</view>
+          <view class="collectible-type">{{item.type}}</view>
+        </view>
+        <view class="collectible-badge">{{item.badge}}</view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

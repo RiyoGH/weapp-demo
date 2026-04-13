@@ -1,0 +1,290 @@
+/* 电竞文旅AI小程序 - 全局样式 */
+/* 王者荣耀热血风格主题 */
+
+/* ==================== 全局变量 ==================== */
+page {
+  --primary-red: #e63028;
+  --primary-gold: #ffd700;
+  --dark-bg: #0a0a1a;
+  --card-bg: #141428;
+  --card-border: #2a2a4a;
+  --text-primary: #ffffff;
+  --text-secondary: #9999bb;
+  --accent-blue: #00ccff;
+  --accent-purple: #9966ff;
+  --accent-green: #66ff66;
+  
+  background-color: var(--dark-bg);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+/* ==================== 通用工具类 ==================== */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==================== 按钮样式 ==================== */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-red) 0%, #ff5533 100%);
+  border: none;
+  border-radius: 12rpx;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 4rpx 20rpx rgba(230, 48, 40, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+  box-shadow: 0 2rpx 10rpx rgba(230, 48, 40, 0.3);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--primary-gold) 0%, #ffaa00 100%);
+  border: none;
+  border-radius: 12rpx;
+  color: var(--dark-bg);
+  font-weight: bold;
+  box-shadow: 0 4rpx 20rpx rgba(255, 215, 0, 0.4);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2rpx solid var(--primary-gold);
+  border-radius: 12rpx;
+  color: var(--primary-gold);
+}
+
+/* ==================== 卡片样式 ==================== */
+.card {
+  background: var(--card-bg);
+  border: 1rpx solid var(--card-border);
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin: 20rpx;
+}
+
+.card-glow {
+  box-shadow: 0 0 30rpx rgba(255, 215, 0, 0.2);
+}
+
+/* ==================== 标题样式 ==================== */
+.section-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: var(--primary-gold);
+  padding: 20rpx 30rpx;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 30rpx;
+  width: 80rpx;
+  height: 4rpx;
+  background: linear-gradient(90deg, var(--primary-gold), transparent);
+}
+
+/* ==================== 标签样式 ==================== */
+.tag {
+  display: inline-block;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  background: var(--card-border);
+}
+
+.tag-red {
+  background: rgba(230, 48, 40, 0.3);
+  color: var(--primary-red);
+}
+
+.tag-gold {
+  background: rgba(255, 215, 0, 0.2);
+  color: var(--primary-gold);
+}
+
+.tag-blue {
+  background: rgba(0, 204, 255, 0.2);
+  color: var(--accent-blue);
+}
+
+/* ==================== 动画效果 ==================== */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20rpx rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40rpx rgba(255, 215, 0, 0.6);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ==================== 列表样式 ==================== */
+.list-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 30rpx;
+  background: var(--card-bg);
+  border-bottom: 1rpx solid var(--card-border);
+  transition: all 0.3s ease;
+}
+
+.list-item:active {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+/* ==================== 头像样式 ==================== */
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  border: 2rpx solid var(--primary-gold);
+  object-fit: cover;
+}
+
+.avatar-lg {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+/* ==================== 输入框样式 ==================== */
+.input-field {
+  background: var(--card-bg);
+  border: 2rpx solid var(--card-border);
+  border-radius: 12rpx;
+  padding: 20rpx 30rpx;
+  color: var(--text-primary);
+  font-size: 28rpx;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 20rpx rgba(255, 215, 0, 0.2);
+}
+
+.input-field::placeholder {
+  color: var(--text-secondary);
+}
+
+/* ==================== 加载动画 ==================== */
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid var(--card-border);
+  border-top-color: var(--primary-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==================== 空状态样式 ==================== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 50rpx;
+}
+
+.empty-state-icon {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-state-text {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ==================== 分隔线 ==================== */
+.divider {
+  height: 1rpx;
+  background: var(--card-border);
+  margin: 20rpx 30rpx;
+}
+
+.divider-vertical {
+  width: 1rpx;
+  height: 100%;
+  background: var(--card-border);
+}
+
+/* ==================== 底部安全区 ==================== */
+.safe-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}

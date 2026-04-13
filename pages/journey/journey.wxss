@@ -1,0 +1,483 @@
+/* journey.wxss - 电竞文旅路线页面样式 */
+
+.container {
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+  background: var(--dark-bg);
+}
+
+/* 顶部标题区 */
+.journey-header {
+  padding: 60rpx 30rpx 30rpx;
+  background: linear-gradient(180deg, rgba(0, 204, 255, 0.1), transparent);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.title-section {
+  flex: 1;
+}
+
+.main-title {
+  font-size: 48rpx;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--primary-gold), #ff4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.sub-title {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.user-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  border: 3rpx solid var(--primary-gold);
+  overflow: hidden;
+}
+
+.user-avatar::after {
+  content: '👤';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 48rpx;
+  background: var(--card-bg);
+}
+
+/* 偏好选择区 */
+.preference-section {
+  margin: 30rpx;
+  padding: 32rpx;
+  background: var(--card-bg);
+  border: 2rpx solid var(--card-border);
+  border-radius: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: var(--primary-gold);
+  margin-bottom: 24rpx;
+}
+
+.preference-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 30rpx;
+}
+
+.pref-tag {
+  padding: 16rpx 28rpx;
+  background: var(--card-border);
+  border-radius: 24rpx;
+  font-size: 26rpx;
+  color: var(--text-primary);
+  border: 2rpx solid transparent;
+  transition: all 0.3s ease;
+}
+
+.pref-tag.selected {
+  background: linear-gradient(135deg, rgba(230, 48, 40, 0.3), rgba(255, 68, 68, 0.2));
+  border-color: var(--primary-red);
+  color: var(--primary-red);
+  font-weight: bold;
+}
+
+.style-tag.selected {
+  background: linear-gradient(135deg, rgba(0, 204, 255, 0.3), rgba(153, 102, 255, 0.2));
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+.city-tag.selected {
+  background: linear-gradient(135deg, rgba(102, 255, 102, 0.3), rgba(255, 170, 0, 0.2));
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+.generate-btn {
+  width: 100%;
+  padding: 32rpx;
+  background: linear-gradient(135deg, var(--primary-red), #ff5533);
+  border-radius: 40rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+  border: none;
+  box-shadow: 0 8rpx 30rpx rgba(230, 48, 40, 0.4);
+}
+
+.generate-btn:active {
+  transform: scale(0.98);
+}
+
+/* 当前路线 */
+.current-route {
+  margin: 30rpx;
+  background: var(--card-bg);
+  border: 2rpx solid var(--card-border);
+  border-radius: 20rpx;
+  overflow: hidden;
+  animation: fadeIn 0.5s ease;
+}
+
+.route-header {
+  padding: 32rpx;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 68, 68, 0.05));
+  border-bottom: 1rpx solid var(--card-border);
+}
+
+.route-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: var(--primary-gold);
+  margin-bottom: 12rpx;
+}
+
+.route-desc {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+/* 路线节点 */
+.route-nodes {
+  padding: 20rpx 0;
+}
+
+.route-node {
+  position: relative;
+  padding: 30rpx 30rpx 30rpx 80rpx;
+  border-bottom: 1rpx solid var(--card-border);
+  transition: all 0.3s ease;
+}
+
+.route-node:last-child {
+  border-bottom: none;
+}
+
+.route-node:active {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.route-node.completed {
+  background: rgba(102, 255, 102, 0.05);
+}
+
+/* 节点连线 */
+.node-line {
+  position: absolute;
+  left: 39rpx;
+  top: 60rpx;
+  width: 2rpx;
+  height: calc(100% - 60rpx);
+  background: var(--card-border);
+}
+
+.node-line.first {
+  top: 50%;
+  height: 50%;
+}
+
+.node-line.last {
+  height: 50%;
+}
+
+/* 节点标记 */
+.node-marker {
+  position: absolute;
+  left: 20rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: var(--card-border);
+  border: 3rpx solid var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  font-weight: bold;
+  color: var(--text-secondary);
+  z-index: 1;
+}
+
+.node-marker.completed {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  color: white;
+}
+
+/* 节点内容 */
+.node-content {
+  flex: 1;
+}
+
+.node-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.node-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.node-type {
+  font-size: 22rpx;
+  padding: 4rpx 12rpx;
+}
+
+.node-desc {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  margin-bottom: 16rpx;
+}
+
+.node-tags {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.node-story {
+  padding: 16rpx 20rpx;
+  background: rgba(255, 215, 0, 0.05);
+  border-left: 4rpx solid var(--primary-gold);
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* 节点操作按钮 */
+.node-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 20rpx;
+}
+
+.node-btn {
+  flex: 1;
+  padding: 16rpx 24rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+  border: none;
+}
+
+.ar-btn {
+  background: rgba(0, 204, 255, 0.2);
+  color: var(--accent-blue);
+}
+
+.collect-btn {
+  background: rgba(255, 215, 0, 0.2);
+  color: var(--primary-gold);
+}
+
+/* 路线统计 */
+.route-stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 30rpx;
+  background: var(--card-border);
+  border-radius: 0 0 20rpx 20rpx;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: var(--primary-gold);
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-top: 8rpx;
+}
+
+.stat-divider {
+  width: 2rpx;
+  background: var(--card-border);
+}
+
+/* 我的路线列表 */
+.my-routes {
+  margin: 30rpx;
+}
+
+.route-card {
+  background: var(--card-bg);
+  border: 2rpx solid var(--card-border);
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  transition: all 0.3s ease;
+}
+
+.route-card:active {
+  transform: scale(0.98);
+  border-color: var(--primary-gold);
+}
+
+.route-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.route-card-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: var(--primary-gold);
+}
+
+.route-card-progress {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.route-card-desc {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-bottom: 16rpx;
+}
+
+.route-card-tags {
+  display: flex;
+  gap: 12rpx;
+}
+
+/* 数字藏品区 */
+.collectibles-section {
+  margin: 30rpx;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.more-link {
+  font-size: 26rpx;
+  color: var(--primary-gold);
+}
+
+.collectibles-scroll {
+  white-space: nowrap;
+  padding: 10rpx 0;
+}
+
+.collectible-card {
+  display: inline-block;
+  width: 200rpx;
+  background: var(--card-bg);
+  border: 2rpx solid var(--card-border);
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-right: 20rpx;
+  vertical-align: top;
+  transition: all 0.3s ease;
+}
+
+.collectible-card:active {
+  transform: scale(0.96);
+  border-color: var(--primary-gold);
+}
+
+.collectible-image-placeholder {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 12rpx;
+  background: var(--card-border);
+  margin-bottom: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collectible-emoji {
+  font-size: 80rpx;
+}
+
+.collectible-info {
+  margin-bottom: 8rpx;
+}
+
+.collectible-name {
+  font-size: 26rpx;
+  color: var(--text-primary);
+  margin-bottom: 6rpx;
+}
+
+.collectible-type {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+}
+
+.collectible-badge {
+  display: inline-block;
+  padding: 4rpx 12rpx;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 12rpx;
+  font-size: 20rpx;
+  color: var(--primary-gold);
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 80rpx 40rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: var(--text-primary);
+  margin-bottom: 12rpx;
+}
+
+.empty-hint {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+/* 动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

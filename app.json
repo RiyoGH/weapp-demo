@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/chat/chat",
+    "pages/ar/ar",
+    "pages/journey/journey",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "backgroundColor": "#0a0a1a",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#0a0a1a",
+    "navigationBarTitleText": "电竞文旅AI",
+    "navigationBarTextStyle": "white"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

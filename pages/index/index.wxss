@@ -1,0 +1,17 @@
+/* pages/index/index.wxss - 修复图片路径 */
+
+/* 战队卡片样式 */
+.team-card {
+  /* ... 其他样式保持不变 ... */
+}
+
+.team-logo {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 3rpx solid var(--primary-gold);
+  margin: 0 auto 16rpx;
+  display: block;
+  background: linear-gradient(135deg, #ff4444, #ff8833);
+  /* 使用渐变背景替代图片 */
+}

@@ -1,0 +1,180 @@
+<!-- ar.wxml -->
+<view class="container">
+  <!-- AR相机视图 -->
+  <camera 
+    wx:if="{{isScanning}}" 
+    class="camera-view"
+    device-position="{{cameraPosition}}"
+    flash="off"
+    bindstop="onCameraStop"
+  >
+    <!-- AR叠加层 -->
+    <view class="ar-overlay">
+      <!-- 扫描框 -->
+      <view class="scan-frame">
+        <view class="frame-corner top-left"></view>
+        <view class="frame-corner top-right"></view>
+        <view class="frame-corner bottom-left"></view>
+        <view class="frame-corner bottom-right"></view>
+      </view>
+
+      <!-- 准星 -->
+      <view class="crosshair"></view>
+
+      <!-- 识别到的标记点信息 -->
+      <view wx:if="{{recognizedTarget}}" class="target-info">
+        <view class="target-name">{{recognizedTarget.name}}</view>
+        <view class="target-desc">{{recognizedTarget.description}}</view>
+      </view>
+
+      <!-- 提示信息 -->
+      <view class="scan-hint" wx:if="{{!recognizedTarget}}">
+        <text>{{scanHint}}</text>
+      </view>
+    </view>
+  </camera>
+
+  <!-- 未授权提示 -->
+  <view wx:if="{{!isScanning}}" class="permission-dialog">
+    <view class="dialog-content">
+      <view class="dialog-icon">📷</view>
+      <view class="dialog-title">需要摄像头权限</view>
+      <view class="dialog-desc">AR扫描需要访问您的摄像头，请授权后使用</view>
+      <view class="dialog-actions">
+        <button class="btn-dialog btn-cancel" bindtap="onCancelPermission">取消</button>
+        <button class="btn-dialog btn-confirm" open-type="openSetting">去设置</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 控制面板 -->
+  <view class="control-panel">
+    <view class="controls-top">
+      <view class="control-btn" bindtap="toggleCamera">
+        <text>{{cameraPosition === 'front' ? '🔄' : '🔄'}}</text>
+        <text class="control-label">切换镜头</text>
+      </view>
+      <view class="control-btn" bindtap="toggleFlash">
+        <text>{{flashMode === 'on' ? '🔦' : '💡'}}</text>
+        <text class="control-label">{{flashMode === 'on' ? '关灯' : '开灯'}}</text>
+      </view>
+      <view class="control-btn" bindtap="toggleAR">
+        <text>{{arEnabled ? '✨' : '🌙'}}</text>
+        <text class="control-label">{{arEnabled ? 'AR开启' : 'AR关闭'}}</text>
+      </view>
+    </view>
+
+    <!-- AR内容展示区域 -->
+    <view wx:if="{{arEnabled && recognizedTarget}}" class="ar-content-area">
+      <!-- 虚拟选手形象 -->
+      <view class="virtual-player {{showPlayer ? 'show' : ''}}" style="bottom: {{playerBottom}}rpx; left: {{playerLeft}}rpx;">
+        <view class="player-image-placeholder" style="background: {{recognizedTarget.playerColor || 'linear-gradient(135deg, #ff4444, #ff8833)'}}">
+          <text class="player-avatar">{{recognizedTarget.playerAvatar || '🎮'}}</text>
+        </view>
+        <view class="player-name">{{recognizedTarget.playerName}}</view>
+        <view class="player-role">{{recognizedTarget.playerRole}}</view>
+      </view>
+
+      <!-- 赛事特效 -->
+      <view class="battle-effects {{showEffects ? 'show' : ''}}">
+        <view class="effect-particle" wx:for="{{effects}}" wx:key="index" style="background: {{item.color}}"></view>
+      </view>
+
+      <!-- 知识图谱卡片 -->
+      <view class="kg-card {{showKG ? 'show' : ''}}" style="top: 100rpx; right: 30rpx;">
+        <view class="kg-header">
+          <text class="kg-title">📊 知识图谱</text>
+        </view>
+        <view class="kg-content">
+          <view class="kg-item">
+            <text class="kg-label">所属战队</text>
+            <text class="kg-value">{{recognizedTarget.team}}</text>
+          </view>
+          <view class="kg-item">
+            <text class="kg-label">羁绊关系</text>
+            <text class="kg-value">{{recognizedTarget.bond}}</text>
+          </view>
+          <view class="kg-item">
+            <text class="kg-label">赛事精神</text>
+            <text class="kg-value spirit-text">{{recognizedTarget.spirit}}</text>
+          </view>
+          <view class="kg-item">
+            <text class="kg-label">关联景点</text>
+            <text class="kg-value">{{recognizedTarget.scenic}}</text>
+          </view>
+        </view>
+        <view class="kg-footer" bindtap="viewFullKG">
+          <text>查看完整图谱 →</text>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="ar-actions">
+        <button class="ar-action-btn" bindtap="captureAR">
+          <text>📸 保存AR</text>
+        </button>
+        <button class="ar-action-btn primary" bindtap="askAI">
+          <text>💬 询问AI</text>
+        </button>
+        <button class="ar-action-btn" bindtap="generatePoster">
+          <text>🎨 生成海报</text>
+        </button>
+      </view>
+    </view>
+
+    <!-- 识别结果展示 -->
+    <view wx:if="{{recognizedTarget && !arEnabled}}" class="recognized-result">
+      <view class="target-image-placeholder" style="background: {{recognizedTarget.playerColor || 'linear-gradient(135deg, #ff4444, #ff8833)'}}">
+        <text class="target-emoji">{{recognizedTarget.playerAvatar || '🎮'}}</text>
+      </view>
+      <view class="target-overlay">
+        <view class="target-name">{{recognizedTarget.name}}</view>
+        <view class="target-desc">{{recognizedTarget.description}}</view>
+        <button class="btn-ar-activate" bindtap="activateAR">开启AR查看</button>
+      </view>
+    </view>
+
+    <!-- 识别历史 -->
+    <scroll-view wx:if="{{scanHistory.length > 0}}" class="history-panel" scroll-y="{{true}}">
+      <view class="history-header">
+        <text>识别历史</text>
+      </view>
+      <view class="history-list">
+        <view 
+          wx:for="{{scanHistory}}" 
+          wx:key="id" 
+          class="history-item"
+          data-target="{{item}}"
+          bindtap="onHistoryTap"
+        >
+          <view class="history-thumb-placeholder" style="background: {{item.playerColor || 'linear-gradient(135deg, #ff4444, #ff8833)'}}">
+            <text>{{item.playerAvatar || '🎮'}}</text>
+          </view>
+          <view class="history-info">
+            <view class="history-name">{{item.name}}</view>
+            <view class="history-time">{{item.time}}</view>
+          </view>
+          <view class="history-arrow">→</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <button 
+      class="scan-btn {{isScanning ? 'scanning' : ''}}" 
+      bindtap="toggleScan"
+    >
+      <text>{{isScanning ? '⏸️ 暂停扫描' : '📷 开始扫描'}}</text>
+    </button>
+  </view>
+
+  <!-- 加载提示 -->
+  <view wx:if="{{isLoading}}" class="loading-overlay">
+    <view class="loading-content">
+      <view class="loading-spinner"></view>
+      <view class="loading-text">识别中...</view>
+    </view>
+  </view>
+</view>

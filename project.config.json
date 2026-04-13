@@ -1,0 +1,31 @@
+{
+  "name": "电竞文旅AI小程序",
+  "version": "1.0.0",
+  "description": "基于腾讯混元大模型、知识图谱和AR技术的电竞文旅应用",
+  "main": "app.js",
+  "pages": [
+    "pages/index/index",
+    "pages/chat/chat",
+    "pages/ar/ar",
+    "pages/journey/journey",
+    "pages/profile/profile"
+  ],
+  "components": [
+    "components/ar-content"
+  ],
+  "utils": [
+    "utils/api",
+    "utils/util"
+  ],
+  "keywords": [
+    "电竞",
+    "AI",
+    "AR",
+    "小程序",
+    "腾讯混元",
+    "知识图谱"
+  ],
+  "author": "电竞AI团队",
+  "license": "MIT",
+  "appid": "wxbad9e496d795a464"
+}
